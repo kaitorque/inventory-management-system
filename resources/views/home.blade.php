@@ -1,0 +1,9 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div>Hello</div>
+    <div>{{session('empid')}}</div>
+    <div>{{session('test')}}</div>
+  </body>
+</html>
