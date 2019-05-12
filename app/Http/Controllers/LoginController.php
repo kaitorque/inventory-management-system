@@ -8,11 +8,21 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use UserFunction;
 
 class LoginController extends Controller
 {
+    public function __contruct()
+    {
+      UserFunction::checkAuth();
+    }
+
     public function login()
     {
+      if(session()->has('empid'))
+      {
+        return redirect()->route('home');
+      }
       return view('auth.login');
     }
 
@@ -66,5 +76,11 @@ class LoginController extends Controller
         "success" => false,
         "response" => $errorMsg,
       ]);
+    }
+
+    public function logout(Request $request)
+    {
+      session()->flush();
+      return redirect()->route('login');
     }
 }

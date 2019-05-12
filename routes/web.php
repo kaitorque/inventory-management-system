@@ -19,3 +19,4 @@ Route::get('/', 'LoginController@login')->name('login');
 Route::get('/test', 'TestController@test')->name('test');
 Route::post('/', 'LoginController@login_post')->name('login.post');
 Route::get('/home', 'HomeController@home')->name('home');
+Route::post('/logout', 'LoginController@logout')->name('logout');

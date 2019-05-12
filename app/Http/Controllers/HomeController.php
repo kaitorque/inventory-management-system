@@ -12,8 +12,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-      UserFunction::testHello();
-
+      UserFunction::checkAuth();
     }
 
     public function home()
