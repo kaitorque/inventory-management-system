@@ -12,6 +12,12 @@
       <div class="m-menu__submenu m-menu__submenu--up"><span class="m-menu__arrow"></span>
         <ul class="m-menu__subnav">
           <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+            <a href="{{route('userlist')}}" class="m-menu__link ">
+              <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+              <span class="m-menu__link-text">User</span>
+            </a>
+          </li>
+          <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
             <a href="{{route('logout')}}" onclick="$('#logoutForm').submit(); return false;" class="m-menu__link ">
               <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
               <span class="m-menu__link-text">Logout</span>

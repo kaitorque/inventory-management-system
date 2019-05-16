@@ -31,4 +31,36 @@ class UserFunction
         }
       }
     }
+
+    public static function encrypt($data, $key = "")
+    {
+      if($key == "")
+      {
+        $key = session('_token');
+      }
+      $encrypted = openssl_encrypt( $data, "AES-128-ECB" , $key);
+      return str_replace(array('+', '/'), array('-', '_'), $encrypted);
+    }
+
+    public static function decrypt($data, $key = "")
+    {
+      if($key == "")
+      {
+        $key = session('_token');
+      }
+      $decrypted = str_replace(array('-', '_'), array('+', '/'), $data);
+      return openssl_decrypt( $decrypted, "AES-128-ECB" , $key);
+    }
+
+    public static function odecrypt($data, $key = "")
+    {
+      if($key == "")
+      {
+        $key = session('_token');
+      }
+      $decrypted = str_replace(array('-', '_'), array('+', '/'), $data);
+      parse_str(openssl_decrypt( $decrypted, "AES-128-ECB" , $key), $req);
+      $req = (object) $req;
+      return $req;
+    }
 }

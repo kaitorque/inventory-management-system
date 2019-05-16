@@ -20,3 +20,11 @@ Route::get('/test', 'TestController@test')->name('test');
 Route::post('/', 'LoginController@login_post')->name('login.post');
 Route::get('/home', 'HomeController@home')->name('home');
 Route::post('/logout', 'LoginController@logout')->name('logout');
+//User
+Route::get('/user-list', 'HomeController@userlist')->name('userlist');
+Route::post('/user-list', 'HomeController@userlist')->name('userlist.search');
+Route::get('/user-add', 'HomeController@useradd')->name('useradd');
+Route::get('/user-edit', 'HomeController@useredit')->name('useredit');
+Route::get('/user-del', 'HomeController@userdel')->name('userdel');
+//Ajax
+Route::post('/check-empid', 'AjaxController@checkempid')->name('checkempid');
