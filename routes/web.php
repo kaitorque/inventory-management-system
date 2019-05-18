@@ -22,9 +22,13 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::post('/logout', 'LoginController@logout')->name('logout');
 //User
 Route::get('/user-list', 'HomeController@userlist')->name('userlist');
-Route::post('/user-list', 'HomeController@userlist')->name('userlist.search');
+Route::post('/user-list', 'HomeController@userlist')->name('userlist.post');
 Route::get('/user-add', 'HomeController@useradd')->name('useradd');
+Route::post('/user-add', 'HomeController@useradd_post')->name('useradd.post');
 Route::get('/user-edit', 'HomeController@useredit')->name('useredit');
-Route::get('/user-del', 'HomeController@userdel')->name('userdel');
+Route::post('/user-edit', 'HomeController@useredit_post')->name('useredit.post');
+Route::post('/user-del', 'HomeController@userdel')->name('userdel');
 //Ajax
 Route::post('/check-empid', 'AjaxController@checkempid')->name('checkempid');
+Route::post('/check-nname', 'AjaxController@checknname')->name('checknname');
+Route::post('/check-nnameedit', 'AjaxController@checknnameedit')->name('checknnameedit');

@@ -27,7 +27,16 @@ class UserFunction
         }
         else
         {
-            session(['nickname' => $select[0]->nickname]);
+          $select2 = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [session('empid')]);
+          if(empty($select2))
+          {
+            session(['usertype' => "manager"]);
+          }
+          else
+          {
+            session(['usertype' => "staff"]);
+          }
+          session(['nickname' => $select[0]->nickname]);
         }
       }
     }
@@ -62,5 +71,25 @@ class UserFunction
       parse_str(openssl_decrypt( $decrypted, "AES-128-ECB" , $key), $req);
       $req = (object) $req;
       return $req;
+    }
+
+    public static function buildcbsort($cbname, $option, $value, $match, $style)
+    {
+      $optionArr = explode(",", $option);
+      $valueArr = explode(",", $value);
+      $string = "<select id='{$cbname}' name='{$cbname}' class='{$style}'>";
+      for($i=0; $i<count($optionArr); $i++)
+      {
+        if($valueArr[$i] == $match)
+        {
+          $string .= "<option selected value='{$valueArr[$i]}'>{$optionArr[$i]}</option>";
+        }
+        else
+        {
+          $string .= "<option value='{$valueArr[$i]}'>{$optionArr[$i]}</option>";
+        }
+      }
+      $string .= "</select>";
+      return $string;
     }
 }

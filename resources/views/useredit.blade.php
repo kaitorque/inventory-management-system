@@ -14,7 +14,7 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">Add User</h3>
+								<h3 class="m-subheader__title ">Edit User</h3>
 							</div>
 						</div>
 					</div>
@@ -31,16 +31,18 @@
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Employee ID:</label>
-													<input type="text" class="form-control m-input" name="empid" value="">
+													<input type="text" class="form-control m-input" name="empid" value="{{$user->emp_id}}" disabled>
+													<input type="hidden" class="form-control m-input" name="encempid" value="<?php echo UserFunction::encrypt($user->emp_id); ?>">
 												</div>
 												<div class="col-md-6">
 													<label>Type:</label>
 													<?php
 													$optionArr = "Staff,Manager";
 													$valueArr = "staff,manager";
-													echo UserFunction::buildcbsort("usertype", $optionArr, $valueArr, "staff", "form-control m-input"); ?>
+													echo UserFunction::buildcbsort("usertype", $optionArr, $valueArr, $user->usertype, "form-control m-input"); ?>
 												</div>
 											</div>
+											<?php if(session("usertype") == "manager"){ ?>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Password:</label>
@@ -51,71 +53,72 @@
 													<input type="password" class="form-control m-input" name="cpass" value="">
 												</div>
 											</div>
+											<?php } ?>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>First Name:</label>
-													<input type="text" class="form-control m-input" name="fname" value="">
+													<input type="text" class="form-control m-input" name="fname" value="{{$user->first_name}}">
 												</div>
 												<div class="col-md-6">
 													<label>Last Name:</label>
-													<input type="text" class="form-control m-input" name="lname" value="">
+													<input type="text" class="form-control m-input" name="lname" value="{{$user->last_name}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Nickname:</label>
-													<input type="text" class="form-control m-input" name="nname" value="">
+													<input type="text" class="form-control m-input" name="nname" value="{{$user->nickname}}">
 												</div>
 												<div class="col-md-6">
 													<label>Date of Birth:</label>
-													<input type="text" class="form-control m-input" name="dob" value="">
+													<input type="text" class="form-control m-input" name="dob" value="{{$user->fmtdob}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row staff-type">
 												<div class="col-md-6">
 													<label>Department:</label>
-													<input type="text" class="form-control m-input" name="dept" value="">
+													<input type="text" class="form-control m-input" name="dept" value="{{$user->dept}}">
 												</div>
 												<div class="col-md-6">
 													<label>Part Time:</label>
-													<input type="text" class="form-control m-input" name="parttime" value="">
+													<input type="text" class="form-control m-input" name="parttime" value="{{$user->part_time}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Address:</label>
-													<input type="text" class="form-control m-input" name="address1" value="">
+													<input type="text" class="form-control m-input" name="address1" value="{{$user->street_add1}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<input type="text" class="form-control m-input" name="address2" value="">
+													<input type="text" class="form-control m-input" name="address2" value="{{$user->street_add2}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Zip Code:</label>
-													<input type="text" class="form-control m-input" name="zipcode" value="">
+													<input type="text" class="form-control m-input" name="zipcode" value="{{$user->zip_code}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>City:</label>
-													<input type="text" class="form-control m-input" name="city" value="">
+													<input type="text" class="form-control m-input" name="city" value="{{$user->city}}">
 												</div>
 												<div class="col-md-6">
 													<label>State:</label>
-													<input type="text" class="form-control m-input" name="state" value="">
+													<input type="text" class="form-control m-input" name="state" value="{{$user->state}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Marital Status:</label>
-													<input type="text" class="form-control m-input" name="maritalstatus" value="">
+													<input type="text" class="form-control m-input" name="maritalstatus" value="{{$user->marital_status}}">
 												</div>
 												<div class="col-md-6">
 													<label>IC Number:</label>
-													<input type="text" class="form-control m-input" name="ssn" value="">
+													<input type="text" class="form-control m-input" name="ssn" value="{{$user->ssn}}">
 												</div>
 											</div>
 										</div>
@@ -139,7 +142,7 @@
 <!-- Example: <script></script> -->
 @endsection
 @section('ready')
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 		//Set header to csrf token
 		$.ajaxSetup({
@@ -162,17 +165,6 @@
 		$("#submitForm").validate({
 				//Normalizer is for trimming whitespace due to required rule no longer ignore whitespace
 				rules: {
-					empid: {
-							 required: true,
-							 digits: true,
-							 normalizer: function(value) {
-									return $.trim(value);
-									 },
-							 remote: {
-								 url: "<?php echo route("checkempid"); ?>",
-								 type: "post",
-							 }
-					},
 					type:	{
 							required: true,
 							normalizer: function(value) {
@@ -199,8 +191,9 @@
 						 },
 						 "nospace": true,
 						 remote: {
-							 url: "<?php echo route("checknname"); ?>",
+							 url: "<?php echo route("checknnameedit"); ?>",
 							 type: "post",
+							 data: { "encempid": function() { return $("input[name=encempid]").val();}  }
 						 }
 					},
 					dob: {
@@ -239,18 +232,6 @@
 							 return $.trim(value);
 						}
 					},
-					pass: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
-					cpass: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
 					ssn: {
 						required: true,
 						normalizer: function(value) {
@@ -260,9 +241,6 @@
 					}
 				},
 				messages: {
-					empid: {
-						remote: jQuery.validator.format("{0} is already taken.")
-					},
 					nname: {
 						remote: jQuery.validator.format("{0} is already taken.")
 					}
@@ -288,7 +266,7 @@
 		{
 			$.ajax({
 				type:'Post',
-				url:"{{route('useradd.post')}}",
+				url:"{{route('useredit.post')}}",
 				data: $(form).serialize(),
 				dataType: "json",
 				success: function(data) {
@@ -299,11 +277,6 @@
 							text:data.response,
 							type:"success",
 							confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
-						}).then((result) => {
-							//if user click ok, it will redirect the user
-							if (result.value) {
-								window.location.href=("{{route('userlist')}}");
-							}
 						});
 						$(form).find(".btn-submit").removeClass("m-loader m-loader--success m-loader--right").prop("disabled", false);
 					}
@@ -330,6 +303,14 @@
 						$(form).find(".btn-submit").removeClass("m-loader m-loader--success m-loader--right").prop("disabled", false);
 					}
 			});
+		}
+		//Check type on load
+		if($("#usertype").val()=="staff")
+		{
+			$(".staff-type").show();
+		}
+		else {
+			$(".staff-type").hide();
 		}
 		//Change Type
 		$("#usertype").on("change", function(){

@@ -19,7 +19,29 @@ class AjaxController extends Controller
 
     public function checkempid(Request $request)
     {
+      UserFunction::checkAuth();
       $check = DB::connection("oracle")->select("SELECT * FROM users WHERE emp_id = ? ", [$request->empid]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
+
+    public function checknname(Request $request)
+    {
+      UserFunction::checkAuth();
+      $check = DB::connection("oracle")->select("SELECT * FROM users WHERE nickname = ? ", [$request->nname]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
+
+    public function checknnameedit(Request $request)
+    {
+      UserFunction::checkAuth();
+      $empid = UserFunction::decrypt($request->encempid);
+      $check = DB::connection("oracle")->select("SELECT * FROM users WHERE nickname = ? AND emp_id != ? ", [$request->nname, $empid]);
       if(empty($check))
         return "true";
       else

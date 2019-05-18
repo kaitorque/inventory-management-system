@@ -28,11 +28,12 @@ class LoginController extends Controller
 
     public function login_post(Request $request)
     {
+      UserFunction::checkAuth();
       //Declare custom error message for custom validator
       $errorMsg = [];
       //Using laravel validator for input
       $rules = [
-      'empid' => 'required',
+      'empid' => 'required|numeric',
       'password' => 'required',
       ];
       $message = [
