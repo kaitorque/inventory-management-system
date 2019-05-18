@@ -15,18 +15,16 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-      UserFunction::checkAuth();
+      $this->middleware('checkauth');
     }
 
     public function home()
     {
-      UserFunction::checkAuth();
       return view('home');
     }
 
     public function userlist(Request $request)
     {
-      UserFunction::checkAuth();
       $users = DB::connection('oracle')->select("SELECT u.*, TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmcreated_date,
       NVL(u2.nickname, u2.emp_id) as ncreated_by
       FROM users u INNER JOIN users u2 ON u.modified_by = u2.emp_id");
@@ -51,13 +49,11 @@ class HomeController extends Controller
 
     public function useradd()
     {
-      UserFunction::checkAuth();
       return view("useradd");
     }
 
     public function useradd_post(Request $request)
     {
-      UserFunction::checkAuth();
       //Declare custom error message for custom validator
       $errorMsg = [];
       //Using laravel validator for input
@@ -191,7 +187,6 @@ class HomeController extends Controller
 
     public function useredit(Request $request)
     {
-      UserFunction::checkAuth();
       $req = UserFunction::odecrypt($request->q);
       $user = DB::connection("oracle")->select("SELECT u.*, TO_CHAR(dob, 'DD/MM/YYYY') fmtdob FROM users u WHERE emp_id = ? ", [$req->empid]);
       $select = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [$req->empid]);
@@ -212,7 +207,6 @@ class HomeController extends Controller
 
     public function useredit_post(Request $request)
     {
-      UserFunction::checkAuth();
       $empid = UserFunction::decrypt($request->encempid);
       //Declare custom error message for custom validator
       $errorMsg = [];

@@ -14,7 +14,8 @@ class UserFunction
 
     public static function checkAuth()
     {
-      if(!session()->has('empid'))
+      // return redirect()->route('login');
+      if(empty(session("empid")))
       {
         return redirect()->route('login');
       }

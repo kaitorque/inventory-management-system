@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     public function __contruct()
     {
-      UserFunction::checkAuth();
+      $this->middleware('checkauth');
     }
 
     public function login()
@@ -28,7 +28,6 @@ class LoginController extends Controller
 
     public function login_post(Request $request)
     {
-      UserFunction::checkAuth();
       //Declare custom error message for custom validator
       $errorMsg = [];
       //Using laravel validator for input
