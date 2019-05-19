@@ -32,3 +32,7 @@ Route::post('/user-del', 'HomeController@userdel')->name('userdel');
 Route::post('/check-empid', 'AjaxController@checkempid')->name('checkempid');
 Route::post('/check-nname', 'AjaxController@checknname')->name('checknname');
 Route::post('/check-nnameedit', 'AjaxController@checknnameedit')->name('checknnameedit');
+//Inventory-list
+Route::get('/inventory-list', 'InvController@inventorylist')->name('inventorylist');
+Route::get('/request-order', 'ReqController@requestorder')->name('requestorder');
+Route::get('/request-list', 'ReqListController@requestlist')->name('requestlist');
