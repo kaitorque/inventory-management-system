@@ -14,7 +14,7 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">Edit User</h3>
+								<h3 class="m-subheader__title ">Edit Product</h3>
 							</div>
 						</div>
 					</div>
@@ -30,115 +30,75 @@
 										<div class="m-portlet__body">
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<label>Employee ID:</label>
-													<input type="text" class="form-control m-input" name="empid" value="{{$user->emp_id}}" disabled>
-													<input type="hidden" class="form-control m-input" name="encempid" value="<?php echo UserFunction::encrypt($user->emp_id); ?>">
+													<label>Product ID:</label>
+													<input type="text" class="form-control m-input" name="pid" value="{{$product->product_id}}" disabled>
+													<input type="hidden" class="form-control m-input" name="encpid" value="<?php echo UserFunction::encrypt($product->product_id); ?>">
 												</div>
 												<div class="col-md-6">
-													<label>Type:</label>
-													<?php
-													$optionArr = "Staff,Manager";
-													$valueArr = "staff,manager";
-													echo UserFunction::buildcbsort("usertype", $optionArr, $valueArr, $user->usertype, "form-control m-input"); ?>
-												</div>
-											</div>
-											<?php if(session("usertype") == "manager"){ ?>
-											<div class="form-group m-form__group row">
-												<div class="col-md-6">
-													<label>Password:</label>
-													<input type="password" class="form-control m-input" name="pass" value="">
-												</div>
-												<div class="col-md-6">
-													<label>Confirm Password:</label>
-													<input type="password" class="form-control m-input" name="cpass" value="">
-												</div>
-											</div>
-											<?php } ?>
-											<div class="form-group m-form__group row">
-												<div class="col-md-6">
-													<label>First Name:</label>
-													<input type="text" class="form-control m-input" name="fname" value="{{$user->first_name}}">
-												</div>
-												<div class="col-md-6">
-													<label>Last Name:</label>
-													<input type="text" class="form-control m-input" name="lname" value="{{$user->last_name}}">
+													<label>Quantity:</label>
+													<input type="text" class="form-control m-input" name="quantity" value="{{$product->quantity}}" disabled>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<label>Nickname:</label>
-													<input type="text" class="form-control m-input" name="nname" value="{{$user->nickname}}">
+													<label>Original Cost:</label>
+													<input type="text" class="form-control m-input" name="cost" value="{{number_format($product->original_cost, 2)}}">
 												</div>
 												<div class="col-md-6">
-													<label>Date of Birth:</label>
-													<input type="text" class="form-control m-input" name="dob" value="{{$user->fmtdob}}">
-												</div>
-											</div>
-											<div class="form-group m-form__group row staff-type">
-												<div class="col-md-6">
-													<label>Department:</label>
-													<input type="text" class="form-control m-input" name="dept" value="{{$user->dept}}">
-												</div>
-												<div class="col-md-6">
-													<label>Part Time:</label>
-													<input type="text" class="form-control m-input" name="parttime" value="{{$user->part_time}}">
+													<label>Retail Price:</label>
+													<input type="text" class="form-control m-input" name="price" value="{{number_format($product->retail_price, 2)}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<label>Address:</label>
-													<input type="text" class="form-control m-input" name="address1" value="{{$user->street_add1}}">
+													<label>Category:</label>
+													<input type="text" class="form-control m-input" name="category" value="{{$product->category}}">
+												</div>
+												<div class="col-md-6">
+													<label>Brand:</label>
+													<input type="text" class="form-control m-input" name="brand" value="{{$product->brand}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<input type="text" class="form-control m-input" name="address2" value="{{$user->street_add2}}">
+													<label>Model:</label>
+													<input type="text" class="form-control m-input" name="model" value="{{$product->model}}">
+												</div>
+												<div class="col-md-6">
+													<label>Groups:</label>
+													<input type="text" class="form-control m-input" name="groups" value="{{$product->groups}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<label>Zip Code:</label>
-													<input type="text" class="form-control m-input" name="zipcode" value="{{$user->zip_code}}">
+													<label>Warranty(Month):</label>
+													<input type="text" class="form-control m-input" name="warranty" value="{{$product->warranty_month}}">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
-													<label>City:</label>
-													<input type="text" class="form-control m-input" name="city" value="{{$user->city}}">
-												</div>
-												<div class="col-md-6">
-													<label>State:</label>
-													<input type="text" class="form-control m-input" name="state" value="{{$user->state}}">
-												</div>
-											</div>
-											<div class="form-group m-form__group row">
-												<div class="col-md-6">
-													<label>Marital Status:</label>
-													<input type="text" class="form-control m-input" name="maritalstatus" value="{{$user->marital_status}}">
-												</div>
-												<div class="col-md-6">
-													<label>IC Number:</label>
-													<input type="text" class="form-control m-input" name="ssn" value="{{$user->ssn}}">
+													<label>Description:</label>
+													<textarea class="form-control m-input" name="desc">{{$product->description}}</textarea>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Created By:</label>
-													<input type="text" class="form-control m-input" name="createdby" value="{{$user->createdby}}" disabled>
+													<input type="text" class="form-control m-input" name="createdby" value="{{$product->createdby}}" disabled>
 												</div>
 												<div class="col-md-6">
 													<label>Created Date:</label>
-													<input type="text" class="form-control m-input" name="createddate" value="{{$user->fmcreated_date}}" disabled>
+													<input type="text" class="form-control m-input" name="createddate" value="{{$product->fmcreated_date}}" disabled>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Updated By:</label>
-													<input type="text" class="form-control m-input" name="modifiedby" value="{{$user->modifiedby}}" disabled>
+													<input type="text" class="form-control m-input" name="modifiedby" value="{{$product->modifiedby}}" disabled>
 												</div>
 												<div class="col-md-6">
 													<label>Last Updated:</label>
-													<input type="text" class="form-control m-input" name="modifiedbydate" value="{{$user->fmmodified_date}}" disabled>
+													<input type="text" class="form-control m-input" name="modifiedbydate" value="{{$product->fmmodified_date}}" disabled>
 												</div>
 											</div>
 										</div>
@@ -162,7 +122,7 @@
 <!-- Example: <script></script> -->
 @endsection
 @section('ready')
-<script type="text/javascript">
+<script>
 	$(document).ready(function(){
 		//Set header to csrf token
 		$.ajaxSetup({
@@ -170,10 +130,6 @@
 					'X-CSRF-TOKEN': $('input[name="_token"]').val()
 					}
 		});
-		//Datepicker
-		$('input[name=dob]').datepicker({
-    	format: "dd/mm/yyyy"
-  	});
 		//Custom Validator
 		jQuery.validator.addMethod("nospace", function(value, element) {
       return value.indexOf(" ") < 0 && value != "";
@@ -185,84 +141,40 @@
 		$("#submitForm").validate({
 				//Normalizer is for trimming whitespace due to required rule no longer ignore whitespace
 				rules: {
-					type:	{
+					cost:	{
 							required: true,
 							normalizer: function(value) {
 								 return $.trim(value);
 									},
-							"notEqualNull": true
+							number: true
 					},
-					fname: {
-						 required: true,
-						 normalizer: function(value) {
-								return $.trim(value);
-						 }
-					},
-					lname: {
-						 required: true,
-						 normalizer: function(value) {
-								return $.trim(value);
-						 }
-					},
-					nname: {
+					price: {
 						 required: true,
 						 normalizer: function(value) {
 								return $.trim(value);
 						 },
-						 "nospace": true,
-						 remote: {
-							 url: "<?php echo route("checknnameedit"); ?>",
-							 type: "post",
-							 data: { "encempid": function() { return $("input[name=encempid]").val();}  }
+						 number: true
+					},
+					category: {
+						 required: true,
+						 normalizer: function(value) {
+								return $.trim(value);
 						 }
 					},
-					dob: {
+					brand: {
 						required: true,
 						normalizer: function(value) {
 							 return $.trim(value);
 						}
 					},
-					address1: {
+					model: {
 						required: true,
 						normalizer: function(value) {
 							 return $.trim(value);
 						}
 					},
-					city: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
-					state: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
-					zipcode: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
-					maritalstatus: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						}
-					},
-					ssn: {
-						required: true,
-						normalizer: function(value) {
-							 return $.trim(value);
-						},
-						digits: true,
-					}
-				},
-				messages: {
-					nname: {
-						remote: jQuery.validator.format("{0} is already taken.")
+					warranty: {
+						digits: true
 					}
 				},
 				invalidHandler: function(event, validator) {
@@ -286,7 +198,7 @@
 		{
 			$.ajax({
 				type:'Post',
-				url:"{{route('useredit.post')}}",
+				url:"{{route('inventoryedit.post')}}",
 				data: $(form).serialize(),
 				dataType: "json",
 				success: function(data) {
@@ -324,24 +236,6 @@
 					}
 			});
 		}
-		//Check type on load
-		if($("#usertype").val()=="staff")
-		{
-			$(".staff-type").show();
-		}
-		else {
-			$(".staff-type").hide();
-		}
-		//Change Type
-		$("#usertype").on("change", function(){
-			if($("#usertype").val()=="staff")
-			{
-				$(".staff-type").show();
-			}
-			else {
-				$(".staff-type").hide();
-			}
-		});
 	});
 </script>
 @endsection

@@ -44,4 +44,13 @@ class AjaxController extends Controller
       else
         return "false";
     }
+
+    public function checkpid(Request $request)
+    {
+      $check = DB::connection("oracle")->select("SELECT * FROM inventories WHERE product_id = ? ", [$request->pid]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
 }

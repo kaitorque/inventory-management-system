@@ -25,7 +25,7 @@ class HomeController extends Controller
 
     public function userlist(Request $request)
     {
-      $users = DB::connection('oracle')->select("SELECT u.*, TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmcreated_date,
+      $users = DB::connection('oracle')->select("SELECT u.*, TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
       NVL(u2.nickname, u2.emp_id) as ncreated_by
       FROM users u INNER JOIN users u2 ON u.modified_by = u2.emp_id");
       $users = array_map(function($row){
@@ -34,7 +34,7 @@ class HomeController extends Controller
       },$users);
       if ($request->isMethod('get'))
       {
-        return view("userlist")->with("users", $users);
+        return view("userlist");
       }
       else if($request->isMethod('post'))
       {
@@ -114,7 +114,7 @@ class HomeController extends Controller
       $select = DB::connection("oracle")->select("SELECT * FROM USERS WHERE EMP_ID = ? ", [$request->empid]);
       if(!empty($select))
       {
-        $errorMsg[]="Employee ID entered already exist. Please choose different Employee id!";
+        $errorMsg[]="Employee ID entered already exist. Please choose different Employee ID!";
       }
       $select = DB::connection("oracle")->select("SELECT * FROM users WHERE nickname = ? ", [$request->nname]);
       if(!empty($select))
@@ -188,7 +188,14 @@ class HomeController extends Controller
     public function useredit(Request $request)
     {
       $req = UserFunction::odecrypt($request->q);
-      $user = DB::connection("oracle")->select("SELECT u.*, TO_CHAR(dob, 'DD/MM/YYYY') fmtdob FROM users u WHERE emp_id = ? ", [$req->empid]);
+      $user = DB::connection("oracle")->select("SELECT u.*, TO_CHAR(u.dob, 'DD/MM/YYYY') fmtdob,
+      TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmcreated_date,
+      TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
+      u2.nickname createdby, u3.nickname modifiedby
+      FROM users u
+      INNER JOIN users u2 on u2.emp_id = u.created_by
+      INNER JOIN users u3 on u3.emp_id = u.modified_by
+      WHERE u.emp_id = ? ", [$req->empid]);
       $select = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [$req->empid]);
       if(empty($select))
       {

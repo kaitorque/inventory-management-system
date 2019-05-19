@@ -12,9 +12,9 @@
 							<div class="mr-auto">
 								<h3 class="m-subheader__title ">Inventory List</h3>
 							</div>
-							<!-- <div>
-								<a class="btn m-btn-pill btn-primary" href="{{route('useradd')}}">Add User</a>
-							</div> -->
+							<div>
+								<a class="btn m-btn--pill btn-primary" href="{{route('inventoryadd')}}">Add Product</a>
+							</div>
 						</div>
 					</div>
 
@@ -26,63 +26,21 @@
 							<div class="col-lg-12">
 								<div class="m-portlet m-portlet--mobile">
 									<div class="m-portlet__body">
-										<table class="table table-striped table-bordered table-hover table-checkable" id="userTable">
+										<table class="table table-striped table-bordered table-hover table-checkable" id="inventoryTable">
 												<thead>
 													<tr>
 														<th>No.</th>
 														<th>Product ID</th>
-														<th>Original cost</th>
-														<th>Retail_price</th>
 														<th>Category</th>
-														<th>Groups</th>
 														<th>Brand</th>
-														<th>Quantity</th>
 														<th>Model</th>
+														<th>Quantity</th>
+														<th>Last Updated</th>
+														<th>Updated By</th>
 														<th>Action</th>
-														<!-- <th>Warranty</th>
-														<th>Created_by</th>
-														<th>Created_date</th>
-														<th>Modified_by</th>
-														<th>Modified_date</th>
-														<th>Description</th> -->
-
 													</tr>
 												</thead>
 												<tbody>
-													<?php
-														$num = 1;
-														//print_r($inventory);
-														foreach($inventory as $item)
-														{ ?>
-															<tr class="list-clickable" data-href="{{UserFunction::encrypt('$item->product_id')}}">
-																<td><?php echo $num; ?></td>
-																<td><?php echo "{$item->product_id}"; ?></td>
-																<td><?php echo "{$item->original_cost}"; ?></td>
-																<td><?php echo "{$item->retail_price}"; ?></td>
-																<td><?php echo "{$item->category}"; ?></td>
-																<td><?php echo "{$item->groups}"; ?></td>
-																<td><?php echo "{$item->brand}"; ?></td>
-																<td><?php echo "{$item->quantity}"; ?></td>
-																<td><?php echo "{$item->model}"; ?></td>
-																<!-- <td><?php //echo "{$item->warranty_month}"; ?></td>
-																<td><?php //echo "{$item->created_by}"; ?></td>
-																<td><?php //echo "{$item->created_date}"; ?></td>
-																<td><?php //echo "{$item->modified_by}"; ?></td>
-																<td><?php //echo "{$item->modified_date}"; ?></td>
-																<td><?php //echo "{$item->description}"; ?></td> -->
-
-																<td>
-																	<?php
-																		if(session('product_id') != $item->product_id)
-																		{ ?>
-																			<a href="" class="btn btn-sm btn-danger">Delete</a>
-															<?php }
-																	?>
-																</td>
-															</tr>
-											<?php		$num++;
-														}
-													?>
 												</tbody>
 											</table>
 									</div>
@@ -101,8 +59,14 @@
 @section('ready')
 <script type="text/javascript">
 	$(document).ready(function(){
+		//Set header to csrf token
+		$.ajaxSetup({
+			headers: {
+					'X-CSRF-TOKEN': $('input[name="_token"]').val()
+					}
+		});
 		//Datatable Declaration
-		var tablelist = $("#userTable").DataTable({
+		var tablelist = $("#inventoryTable").DataTable({
 			scrollY:"false",
 			scrollX:true,
 			scrollCollapse:true,
@@ -122,10 +86,111 @@
 	          cell.innerHTML = i+1;
 	      } );
 	  } ).draw();
+		//Load data to datatables
+		function loaddata()
+		{
+			$.ajax({
+					type:'POST',
+					url:"{{route('inventorylist.post')}}",
+					// data: $("#searchListForm").serialize(),
+					dataType: "json",
+					success:function(data){
+						mApp.unblockPage();
+						tablelist.clear();
+						for(var i=0; i<data.data.length; i++)
+						{
+	              var row = tablelist.row.add(["",
+	                                  data.data[i].product_id,
+																		data.data[i].category,
+	                                  data.data[i].brand,
+																		data.data[i].model,
+	                                  data.data[i].quantity,
+																		data.data[i].fmmodified_date,
+	                                  data.data[i].ncreated_by,
+	                                  `<button type="button" class="btn btn-sm btn-danger btn-delete">Delete</button>`]);
+								row.nodes().to$().attr('data-link', data.data[i].link).addClass('list-clickable');
+						}
+	          tablelist.draw();
+					},
+					error: function(jqXHR, exception){
+						swal({
+							title:"",
+							text:"Error Code: "+jqXHR.status+"-"+jqXHR.statusText,
+							type:"error",
+							confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+						});
+						mApp.unblockPage();
+					}
+				});
+		}
+		loaddata();
 		//Clickable list
-		$("#userTable").on("dblclick", ".list-clickable", function(){
-			var link = $(this).data('href');
-			window.location.href = "{{route('useredit')}}?q="+link;
+		$("#inventoryTable").on("dblclick", ".list-clickable", function(){
+			var link = $(this).data('link');
+			window.location.href = "{{route('inventoryedit')}}?q="+link;
+		});
+		//Delete item
+		$("#inventoryTable").on("click", ".btn-delete", function(e){
+			e.preventDefault();
+			swal({
+				title:"Are you sure?",
+				text:"You won't be able to revert this!",
+				type:"warning",
+				showCancelButton: true,
+				confirmButtonClass:"btn btn-danger m-btn m-btn--wide"
+			}).then((result) => {
+				if (result.value) {
+					mApp.blockPage({
+							overlayColor: "#000000",
+							type: "loader",
+							state: "success",
+							message: "Please wait..."
+					});
+					var thisbutton = $(this);
+					var delid = $(this).closest("tr").data("link");
+					$.ajax({
+						type:'POST',
+						url:"{{route('inventorydel')}}",
+						data: {delid},
+						dataType: "json",
+						success:function(data){
+							if(data.success)
+							{
+								swal({
+									title:"",
+									text:data.response,
+									type:"success",
+									confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+								}).then((result) => {
+				// 						thisbutton.parent().remove();
+											tablelist.row( thisbutton.closest('tr') ).remove().draw();
+				// 						renumberingList();
+								});
+							}
+							else
+							{
+								swal({
+									title:"",
+									//Only display first error return by the array
+									text:data.response[0],
+									type:"error",
+									confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+								});
+							}
+							mApp.unblockPage();
+						},
+						error: function(jqXHR, exception){
+							swal({
+								title:"",
+								text:"Error Code: "+jqXHR.status+"-"+jqXHR.statusText,
+								type:"error",
+								confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+							});
+							mApp.unblockPage();
+						}
+					});
+				}
+			});
 		});
 	});
 </script>

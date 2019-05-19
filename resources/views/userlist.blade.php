@@ -101,7 +101,7 @@
 	                                  `${data.data[i].first_name} ${data.data[i].last_name}`,
 	                                  data.data[i].nickname,
 	                                  data.data[i].emp_id,
-																		data.data[i].fmcreated_date,
+																		data.data[i].fmmodified_date,
 	                                  data.data[i].ncreated_by,
 	                                  `<button type="button" class="btn btn-sm btn-danger btn-delete `+(data.data[i].emp_id == {{session('empid')}} ? "d-none" : "")+`">Delete</button>`]);
 								row.nodes().to$().attr('data-link', data.data[i].link).addClass('list-clickable');
