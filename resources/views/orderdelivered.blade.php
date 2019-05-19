@@ -1,0 +1,319 @@
+@extends('layouts.wrapper')
+@section('pluginstyle')
+<!-- Example: <link rel="stylesheet" type="text/css" href="" /> -->
+@endsection
+@section('style')
+<style>
+.m-form .form-control-feedback{
+	color: #f4516c;
+}
+</style>
+@endsection
+@section('content')
+					<!-- BEGIN: Subheader -->
+					<div class="m-subheader ">
+						<div class="d-flex align-items-center">
+							<div class="mr-auto">
+								<h3 class="m-subheader__title ">Delivered item form</h3>
+							</div>
+						</div>
+					</div>
+
+					<!-- END: Subheader -->
+					<div class="m-content">
+
+						<!--Begin::Section-->
+						<div class="m-portlet m-portlet--tab">
+							<div class="m-portlet__head">
+								<div class="m-portlet__head-caption">
+									<div class="m-portlet__head-title">
+										<span class="m-portlet__head-icon m--hide">
+											<i class="la la-gear"></i>
+										</span>
+										<h3 class="m-portlet__head-text">
+											Item form
+										</h3>
+									</div>
+								</div>
+							</div>
+
+							<!--begin::Form-->
+							<form class="m-form m-form--fit m-form--label-align-right">
+								<div class="m-portlet__body">
+									<div class="form-group m-form__group">
+										<label>Employee Name:</label>
+										<p class="form-control-static">MUHAMMAD FIRDAUS BIN JAMDI@example</p>
+									</div>
+									<div class="form-group m-form__group">
+										<label>Employee ID:</label>
+										<p class="form-control-static">112233@example</p>
+									</div>
+									<div class="form-group m-form__group">
+										<label for="exampleInputEmail1">Delivered Item:</label>
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#m_modal_4">Enter Item</button>
+										<span class="m-form__help"></span>
+									</div>
+									<div class="form-group m-form__group">
+										<label for="exampleInputEmail1">Date:</label>
+										<input type="date" class="form-control m-input m-input--square" name ="date_deliver" placeholder="Enter email">
+										<span class="m-form__help">Insert delivered item date</span>
+									</div>
+								</div>
+								<div class="m-portlet__foot m-portlet__foot--fit">
+									<div class="m-form__actions">
+										<button type="reset" class="btn btn-primary">Submit</button>
+										<button type="reset" class="btn btn-secondary">Cancel</button>
+									</div>
+
+									<!-- MODAL CLASS FOR REQUEST ITEM -->
+									<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Item delivered:</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+												<form> 	<!-- Form inside modal -->
+														<div class="form-group">
+															<label class="form-control-label">Enter Item ID:</label>
+															<input type="number" class="form-control" id="" placeholder="Item ID" name="Item_ID">
+														</div>
+														<!--
+														.
+														.
+														. -->
+
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													<button type="button" class="btn btn-accent">Submit item</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- END MODAL -->
+								</div>
+							</form>
+
+							<!--end::Form-->
+						</div>
+						<!--End::Section-->
+					</div>
+@endsection
+@section('plugin')
+<!-- Example: <script type="text/javascript" src=""></script> -->
+@endsection
+@section('script')
+<!-- Example: <script></script> -->
+@endsection
+@section('ready')
+<script>
+	$(document).ready(function(){
+		//Set header to csrf token
+		$.ajaxSetup({
+			headers: {
+					'X-CSRF-TOKEN': $('input[name="_token"]').val()
+					}
+		});
+		//Datepicker
+		$('input[name=dob]').datepicker({
+    	format: "dd/mm/yyyy"
+  	});
+		//Custom Validator
+		jQuery.validator.addMethod("nospace", function(value, element) {
+      return value.indexOf(" ") < 0 && value != "";
+    }, "Space are not allowed.");
+		$.validator.addMethod("notEqualNull", function(value, element) {
+			return this.optional(element) || value != "null";
+		}, "Please select Type.");
+		//Validate form using jquery.validation
+		$("#submitForm").validate({
+				//Normalizer is for trimming whitespace due to required rule no longer ignore whitespace
+				rules: {
+					empid: {
+							 required: true,
+							 digits: true,
+							 normalizer: function(value) {
+									return $.trim(value);
+									 },
+							 remote: {
+								 url: "<?php echo route("checkempid"); ?>",
+								 type: "post",
+							 }
+					},
+					type:	{
+							required: true,
+							normalizer: function(value) {
+								 return $.trim(value);
+									},
+							"notEqualNull": true
+					},
+					fname: {
+						 required: true,
+						 normalizer: function(value) {
+								return $.trim(value);
+						 }
+					},
+					lname: {
+						 required: true,
+						 normalizer: function(value) {
+								return $.trim(value);
+						 }
+					},
+					nname: {
+						 required: true,
+						 normalizer: function(value) {
+								return $.trim(value);
+						 },
+						 "nospace": true,
+						 remote: {
+							 url: "<?php echo route("checknname"); ?>",
+							 type: "post",
+						 }
+					},
+					dob: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					address1: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					city: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					state: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					zipcode: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					maritalstatus: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					pass: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					cpass: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						}
+					},
+					ssn: {
+						required: true,
+						normalizer: function(value) {
+							 return $.trim(value);
+						},
+						digits: true,
+					}
+				},
+				messages: {
+					empid: {
+						remote: jQuery.validator.format("{0} is already taken.")
+					},
+					nname: {
+						remote: jQuery.validator.format("{0} is already taken.")
+					}
+				},
+				invalidHandler: function(event, validator) {
+					swal({
+						title:"",
+						text:"There are some errors in your form. Please correct them.",
+						type:"error",
+						confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+					});
+				 },
+				submitHandler: function(form) {
+					//For spinner animation and disabled button
+					$(form).find(".btn-submit").addClass("m-loader m-loader--success m-loader--right").prop("disabled", true);
+					submitForm(form);
+					//Prevent form submit
+					return false;
+				}
+		});
+
+		function submitForm(form)
+		{
+			$.ajax({
+				type:'Post',
+				url:"{{route('useradd.post')}}",
+				data: $(form).serialize(),
+				dataType: "json",
+				success: function(data) {
+					if(data.success)
+					{
+						swal({
+							title:"",
+							text:data.response,
+							type:"success",
+							confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+						}).then((result) => {
+							//if user click ok, it will redirect the user
+							if (result.value) {
+								window.location.href=("{{route('userlist')}}");
+							}
+						});
+						$(form).find(".btn-submit").removeClass("m-loader m-loader--success m-loader--right").prop("disabled", false);
+					}
+					else
+					{
+						swal({
+							title:"",
+							//Only display first error return by the array
+							text:data.response[0],
+							type:"error",
+							confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+						});
+						//Stop spinner and disabled on button
+						$(form).find(".btn-submit").removeClass("m-loader m-loader--success m-loader--right").prop("disabled", false);
+					}
+				},
+				error: function(jqXHR, exception){
+						swal({
+							title:"",
+							text:"Error Code: "+jqXHR.status+"-"+jqXHR.statusText,
+							type:"error",
+							confirmButtonClass:"btn btn-secondary m-btn m-btn--wide"
+						});
+						$(form).find(".btn-submit").removeClass("m-loader m-loader--success m-loader--right").prop("disabled", false);
+					}
+			});
+		}
+		//Change Type
+		$("#usertype").on("change", function(){
+			if($("#usertype").val()=="staff")
+			{
+				$(".staff-type").show();
+			}
+			else {
+				$(".staff-type").hide();
+			}
+		});
+	});
+</script>
+@endsection

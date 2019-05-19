@@ -10,11 +10,37 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">Request List</h3>
+								<h3 class="m-subheader__title ">Request inventory list</h3>
+								<br>
+								<!--table-->
+								<div class="m-portlet">
+								<div class="m-section">
+									<div class="m-section__content">
+										<table class="table table-bordered m-table m-table--border-success m-table--head-bg-success">
+											<thead>
+												<tr>
+													<th>Request ID</th>
+													<th>Employee ID</th>
+													<th>Date created</th>
+
+													<!-- <td><?php //echo $requestview[0]->request_id ; ?></td> -->
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><?php echo $requestview[0]->request_id ; ?></td>
+													<td><?php echo $requestview[0]->usr_emp_id ; ?></td>
+													<td><?php echo $requestview[0]->created_date ; ?></td>
+												</tr>
+
+										</table>
+									</div>
+								</div>
 							</div>
-							<!-- <div>
-								<a class="btn m-btn-pill btn-primary" href="{{route('useradd')}}">Add User</a>
-							</div> -->
+							</div>
+							<div>
+								<a class="btn m-btn-pill btn-primary" href="{{route('requestlist')}}">Back</a>
+							</div>
 						</div>
 					</div>
 
@@ -30,11 +56,13 @@
 												<thead>
 													<tr>
 														<th>No.</th>
-														<th>Request ID</th>
-														<th>Request Date</th>
-														<th>Employee Name</th>
-														<th>Status</th>
-														<th>View all</th>
+														<th>Product ID</th>
+														<th>Category</th>
+														<th>Groups</th>
+														<th>Brand</th>
+														<th>Model</th>
+														<th>Warranty duration</th>
+														<th>Price</th>
 														<!-- <th>Warranty</th>
 														<th>Created_by</th>
 														<th>Created_date</th>
@@ -48,15 +76,17 @@
 													<?php
 														$num = 1;
 
-														foreach($requestlist as $item)
+														foreach($requestview as $item)
 														{ ?>
 															<tr class="list-clickable" data-href="{{UserFunction::encrypt('$item->request_id')}}">
 																<td><?php echo $num; ?></td>
-																<td><?php echo "{$item->request_id}"; ?></td>
-																<td><?php echo "{$item->dates}"; ?></td>
-																<td><?php echo "{$item->nickname}"; ?></td>
-																<td><?php echo "{$item->req_status}"; ?></td>
-
+																<td><?php echo "{$item->product_id}"; ?></td>
+																<td><?php echo "{$item->category}"; ?></td>
+																<td><?php echo "{$item->groups}"; ?></td>
+																<td><?php echo "{$item->brand}"; ?></td>
+																<td><?php echo "{$item->model}"; ?></td>
+																<td><?php echo "{$item->warranty_month}"; ?></td>
+																<td><?php echo "{$item->retail_price}"; ?></td>
 																<!-- <td><?php //echo "{$item->warranty_month}"; ?></td>
 																<td><?php //echo "{$item->created_by}"; ?></td>
 																<td><?php //echo "{$item->created_date}"; ?></td>
@@ -64,14 +94,14 @@
 																<td><?php //echo "{$item->modified_date}"; ?></td>
 																<td><?php //echo "{$item->description}"; ?></td> -->
 
-																<td>
+																<!-- <td>
 																	<?php
-																		if(session('request_id') != $item->request_id)
+																		// if(session('request_id') != $item->request_id)
 																		{ ?>
 																			<a href="{{route('requestview')}}" class="btn btn-sm btn-info">View</a>
 															<?php }
 																	?>
-																</td>
+																</td> -->
 															</tr>
 											<?php		$num++;
 														}
@@ -82,6 +112,8 @@
 								</div>
 							</div>
 						</div>
+
+
 						<!--End::Section-->
 					</div>
 @endsection

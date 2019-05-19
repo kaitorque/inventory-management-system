@@ -44,3 +44,7 @@ Route::post('/inventory-del', 'InvController@inventorydel')->name('inventorydel'
 //Request
 Route::get('/request-order', 'ReqController@requestorder')->name('requestorder');
 Route::get('/request-list', 'ReqListController@requestlist')->name('requestlist');
+Route::get('/request-view', 'ReqListController@requestview')->name('requestview');
+
+//Delivery
+Route::get('/order-delivered', 'DelController@orderdelivered')->name('orderdelivered');
