@@ -33,6 +33,10 @@ Route::post('/check-empid', 'AjaxController@checkempid')->name('checkempid');
 Route::post('/check-nname', 'AjaxController@checknname')->name('checknname');
 Route::post('/check-nnameedit', 'AjaxController@checknnameedit')->name('checknnameedit');
 Route::post('/check-pid', 'AjaxController@checkpid')->name('checkpid');
+Route::post('/check-rid', 'AjaxController@checkrid')->name('checkrid');
+Route::post('/check-did', 'AjaxController@checkdid')->name('checkdid');
+Route::post('/check-puid', 'AjaxController@checkpuid')->name('checkpuid');
+Route::post('/invlist', 'AjaxController@invlist')->name('invlist');
 //Inventory
 Route::get('/inventory-list', 'InvController@inventorylist')->name('inventorylist');
 Route::post('/inventory-list', 'InvController@inventorylist')->name('inventorylist.post');
@@ -42,9 +46,27 @@ Route::get('/inventory-edit', 'InvController@inventoryedit')->name('inventoryedi
 Route::post('/inventory-edit', 'InvController@inventoryedit_post')->name('inventoryedit.post');
 Route::post('/inventory-del', 'InvController@inventorydel')->name('inventorydel');
 //Request
-Route::get('/request-order', 'ReqController@requestorder')->name('requestorder');
-Route::get('/request-list', 'ReqListController@requestlist')->name('requestlist');
-Route::get('/request-view', 'ReqListController@requestview')->name('requestview');
-
+Route::get('/request-list', 'ReqController@requestlist')->name('requestlist');
+Route::post('/request-list', 'ReqController@requestlist')->name('requestlist.post');
+Route::get('/request-add', 'ReqController@requestadd')->name('requestadd');
+Route::post('/request-add', 'ReqController@requestadd_post')->name('requestadd.post');
+Route::get('/request-edit', 'ReqController@requestedit')->name('requestedit');
+Route::post('/request-edit', 'ReqController@requestedit_post')->name('requestedit.post');
+Route::post('/request-del', 'ReqController@requestdel')->name('requestdel');
 //Delivery
-Route::get('/order-delivered', 'DelController@orderdelivered')->name('orderdelivered');
+Route::get('/delivered-list', 'DelController@deliveredlist')->name('deliveredlist');
+Route::post('/delivered-list', 'DelController@deliveredlist')->name('deliveredlist.post');
+Route::get('/delivered-add', 'DelController@deliveredadd')->name('deliveredadd');
+Route::post('/delivered-add', 'DelController@deliveredadd_post')->name('deliveredadd.post');
+Route::get('/delivered-edit', 'DelController@deliverededit')->name('deliverededit');
+Route::post('/delivered-edit', 'DelController@deliverededit_post')->name('deliverededit.post');
+Route::post('/delivered-del', 'DelController@delivereddel')->name('delivereddel');
+//Purchase
+Route::get('/purchase-list', 'PurchaseController@purchaselist')->name('purchaselist');
+Route::post('/purchase-list', 'PurchaseController@purchaselist')->name('purchaselist.post');
+Route::get('/purchase-add', 'PurchaseController@purchaseadd')->name('purchaseadd');
+Route::post('/purchase-quick', 'PurchaseController@purchasequick')->name('purchasequick');
+Route::post('/purchase-add', 'PurchaseController@purchaseadd_post')->name('purchaseadd.post');
+Route::get('/purchase-edit', 'PurchaseController@purchaseedit')->name('purchaseedit');
+Route::post('/purchase-edit', 'PurchaseController@purchaseedit_post')->name('purchaseedit.post');
+Route::post('/purchase-del', 'PurchaseController@purchasedel')->name('purchasedel');

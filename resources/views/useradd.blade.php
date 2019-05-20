@@ -78,7 +78,10 @@
 												</div>
 												<div class="col-md-6">
 													<label>Part Time:</label>
-													<input type="text" class="form-control m-input" name="parttime" value="">
+													<?php
+													$optionArr = "No,Yes";
+													$valueArr = "0,1";
+													echo UserFunction::buildcbsort("parttime", $optionArr, $valueArr, 0, "form-control m-input"); ?>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">

@@ -17,7 +17,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- begin::Head -->
 	<head>
 		<meta charset="utf-8" />
-		<title>Metronic | Dashboard</title>
+		<title>Kedai Ustaz</title>
 		<meta name="description" content="Latest updates and statistic charts">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
@@ -51,7 +51,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--RTL version:<link href="assets/vendors/custom/fullcalendar/fullcalendar.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
 
 		<!--end::Page Vendors Styles -->
-		<link rel="shortcut icon" href="{{asset('assets/demo/demo3/media/img/logo/favicon.ico')}}" />
+		<link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" />
     @yield('style')
 	</head>
 
@@ -72,8 +72,8 @@ License: You must have a valid license purchased only from themeforest(the above
 						<div class="m-stack__item m-brand  m-brand--skin-dark ">
 							<div class="m-stack m-stack--ver m-stack--general">
 								<div class="m-stack__item m-stack__item--middle m-stack__item--center m-brand__logo">
-									<a href="index.html" class="m-brand__logo-wrapper">
-										<img alt="" src="{{asset('assets/demo/demo3/media/img/logo/logo.png')}}" />
+									<a href="{{route('home')}}" class="m-brand__logo-wrapper">
+										<img alt="" src="{{asset('img/kedai-ustaz4.png')}}" />
 									</a>
 								</div>
 								<div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -116,7 +116,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										 m-dropdown-toggle="click">
 											<a href="#" class="m-nav__link m-dropdown__toggle">
 												<span class="m-topbar__userpic">
-													<img src="{{asset('assets/app/media/img/users/user3.jpg')}}" alt="" />
+													<img src="{{asset('img/default-user.png')}}" alt="" />
 												</span>
 											</a>
 											<div class="m-dropdown__wrapper">
@@ -125,59 +125,17 @@ License: You must have a valid license purchased only from themeforest(the above
 													<div class="m-dropdown__header m--align-center" style="background: url(assets/app/media/img/misc/user_profile_bg.jpg); background-size: cover;">
 														<div class="m-card-user m-card-user--skin-dark">
 															<div class="m-card-user__pic">
-																<img src="{{asset('assets/app/media/img/users/user3.jpg')}}" alt="" />
+																<img src="{{asset('img/default-user.png')}}" alt="" />
 															</div>
 															<div class="m-card-user__details">
-																<span class="m-card-user__name m--font-weight-500">Lisa Strong</span>
-																<a href="" class="m-card-user__email m--font-weight-300 m-link">lisa.strong@gmail.com</a>
+																<span class="m-card-user__name m--font-weight-500">{{session('firstname')}} {{session('lastname')}}</span>
+																<a href="" class="m-card-user__email m--font-weight-300 m-link">Emp ID: {{session('empid')}}</a>
 															</div>
 														</div>
 													</div>
 													<div class="m-dropdown__body">
 														<div class="m-dropdown__content">
 															<ul class="m-nav m-nav--skin-light">
-																<li class="m-nav__section m--hide">
-																	<span class="m-nav__section-text">Section</span>
-																</li>
-																<li class="m-nav__item">
-																	<a href="profile.html" class="m-nav__link">
-																		<i class="m-nav__link-icon flaticon-profile-1"></i>
-																		<span class="m-nav__link-title">
-																			<span class="m-nav__link-wrap">
-																				<span class="m-nav__link-text">My Profile</span>
-																				<span class="m-nav__link-badge"><span class="m-badge m-badge--success">2</span></span>
-																			</span>
-																		</span>
-																	</a>
-																</li>
-																<li class="m-nav__item">
-																	<a href="profile.html" class="m-nav__link">
-																		<i class="m-nav__link-icon flaticon-share"></i>
-																		<span class="m-nav__link-text">Activity</span>
-																	</a>
-																</li>
-																<li class="m-nav__item">
-																	<a href="profile.html" class="m-nav__link">
-																		<i class="m-nav__link-icon flaticon-chat-1"></i>
-																		<span class="m-nav__link-text">Messages</span>
-																	</a>
-																</li>
-																<li class="m-nav__separator m-nav__separator--fit">
-																</li>
-																<li class="m-nav__item">
-																	<a href="profile.html" class="m-nav__link">
-																		<i class="m-nav__link-icon flaticon-info"></i>
-																		<span class="m-nav__link-text">FAQ</span>
-																	</a>
-																</li>
-																<li class="m-nav__item">
-																	<a href="profile.html" class="m-nav__link">
-																		<i class="m-nav__link-icon flaticon-lifebuoy"></i>
-																		<span class="m-nav__link-text">Support</span>
-																	</a>
-																</li>
-																<li class="m-nav__separator m-nav__separator--fit">
-																</li>
 																<li class="m-nav__item">
 																	<a href="{{route('logout')}}" onclick="$('#logoutForm').submit(); return false;" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">Logout</a>
 																</li>
@@ -227,36 +185,11 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
 						<div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
 							<span class="m-footer__copyright">
-								2017 &copy; Metronic theme by <a href="https://keenthemes.com" class="m-link">Keenthemes</a>
+								2019 &copy; Quantum Helix
 							</span>
 						</div>
 						<div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
 							<ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-								<li class="m-nav__item">
-									<a href="#" class="m-nav__link">
-										<span class="m-nav__link-text">About</span>
-									</a>
-								</li>
-								<li class="m-nav__item">
-									<a href="#" class="m-nav__link">
-										<span class="m-nav__link-text">Privacy</span>
-									</a>
-								</li>
-								<li class="m-nav__item">
-									<a href="#" class="m-nav__link">
-										<span class="m-nav__link-text">T&C</span>
-									</a>
-								</li>
-								<li class="m-nav__item">
-									<a href="#" class="m-nav__link">
-										<span class="m-nav__link-text">Purchase</span>
-									</a>
-								</li>
-								<li class="m-nav__item m-nav__item">
-									<a href="#" class="m-nav__link" data-toggle="m-tooltip" title="Support Center" data-placement="left">
-										<i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-									</a>
-								</li>
 							</ul>
 						</div>
 					</div>

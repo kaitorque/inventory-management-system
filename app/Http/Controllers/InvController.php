@@ -19,7 +19,7 @@ class InvController extends Controller
 
     public function inventorylist(Request $request)
     {
-      $inventory = DB::connection('oracle')->select("SELECT i.*, TO_CHAR(i.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
+      $inventory = DB::connection('oracle')->select("SELECT i.product_id, i.category, i.brand, i.model, i.quantity, TO_CHAR(i.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
         NVL(u.nickname, u.emp_id) as ncreated_by
         FROM inventories i INNER JOIN users u ON u.emp_id = i.modified_by");
       $inventory = array_map(function($row){
@@ -39,7 +39,6 @@ class InvController extends Controller
           "link" => route("inventoryedit"),
         ]);
       }
-
     }
 
     public function inventoryadd()
@@ -122,9 +121,10 @@ class InvController extends Controller
     public function inventoryedit(Request $request)
     {
       $req = UserFunction::odecrypt($request->q);
-      $product = DB::connection("oracle")->select("SELECT i.*,
+      $product = DB::connection("oracle")->select("SELECT i.product_id, i.quantity, i.original_cost, i.retail_price, i.category,
+      i.brand, i.model, i.groups, i.warranty_month, i.description,
       TO_CHAR(i.created_date,'DD-MM-YYYY HH:MI AM') as fmcreated_date,
-      TO_CHAR(i.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
+      TO_CHAR(i.modified_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
       u2.nickname createdby, u3.nickname modifiedby
       FROM inventories i
       INNER JOIN users u2 on u2.emp_id = i.created_by

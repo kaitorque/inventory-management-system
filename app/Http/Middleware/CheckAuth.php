@@ -29,7 +29,7 @@ class CheckAuth
         }
         else
         {
-          $select2 = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [session('empid')]);
+          $select2 = DB::connection("oracle")->select("SELECT * FROM staffs WHERE emp_id = ?", [session('empid')]);
           if(empty($select2))
           {
             session(['usertype' => "manager"]);
@@ -39,6 +39,8 @@ class CheckAuth
             session(['usertype' => "staff"]);
           }
           session(['nickname' => $select[0]->nickname]);
+          session(['firstname' => $select[0]->first_name]);
+          session(['lastname' => $select[0]->last_name]);
           return $next($request);
         }
       }

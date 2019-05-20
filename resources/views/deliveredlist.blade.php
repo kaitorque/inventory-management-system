@@ -10,10 +10,10 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">Request List</h3>
+								<h3 class="m-subheader__title ">Delivered List</h3>
 							</div>
 							<div>
-								<a class="btn m-btn--pill btn-primary" href="{{route('requestadd')}}">Add Request</a>
+								<a class="btn m-btn--pill btn-primary" href="{{route('deliveredadd')}}">Add Delivered</a>
 							</div>
 						</div>
 					</div>
@@ -26,11 +26,11 @@
 							<div class="col-lg-12">
 								<div class="m-portlet m-portlet--mobile">
 									<div class="m-portlet__body">
-										<table class="table table-striped table-bordered table-hover table-checkable" id="requestTable">
+										<table class="table table-striped table-bordered table-hover table-checkable" id="deliveredTable">
 												<thead>
 													<tr>
 														<th>No.</th>
-														<th>Request ID</th>
+														<th>Delivered ID</th>
 														<th>Last Updated</th>
 														<th>Updated By</th>
 														<th>Total Cost</th>
@@ -64,7 +64,7 @@
 					}
 		});
 		//Datatable Declaration
-		var tablelist = $("#requestTable").DataTable({
+		var tablelist = $("#deliveredTable").DataTable({
 			scrollY:"false",
 			scrollX:true,
 			scrollCollapse:true,
@@ -89,7 +89,7 @@
 		{
 			$.ajax({
 					type:'POST',
-					url:"{{route('requestlist.post')}}",
+					url:"{{route('deliveredlist.post')}}",
 					// data: $("#searchListForm").serialize(),
 					dataType: "json",
 					success:function(data){
@@ -98,7 +98,7 @@
 						for(var i=0; i<data.data.length; i++)
 						{
 	              var row = tablelist.row.add(["",
-	                                  data.data[i].request_id,
+	                                  data.data[i].delivered_id,
 																		data.data[i].fmmodified_date,
 																		data.data[i].ncreated_by,
 																		data.data[i].totalcost,
@@ -121,12 +121,12 @@
 		}
 		loaddata();
 		//Clickable list
-		$("#requestTable").on("dblclick", ".list-clickable", function(){
+		$("#deliveredTable").on("dblclick", ".list-clickable", function(){
 			var link = $(this).data('link');
-			window.location.href = "{{route('requestedit')}}?q="+link;
+			window.location.href = "{{route('deliverededit')}}?q="+link;
 		});
 		//Delete item
-		$("#requestTable").on("click", ".btn-delete", function(e){
+		$("#deliveredTable").on("click", ".btn-delete", function(e){
 			e.preventDefault();
 			swal({
 				title:"Are you sure?",
@@ -146,7 +146,7 @@
 					var delid = $(this).closest("tr").data("link");
 					$.ajax({
 						type:'POST',
-						url:"{{route('requestdel')}}",
+						url:"{{route('delivereddel')}}",
 						data: {delid},
 						dataType: "json",
 						success:function(data){

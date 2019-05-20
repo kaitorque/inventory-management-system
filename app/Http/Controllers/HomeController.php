@@ -25,7 +25,11 @@ class HomeController extends Controller
 
     public function userlist(Request $request)
     {
-      $users = DB::connection('oracle')->select("SELECT u.*, TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
+      $users = DB::connection('oracle')->select("SELECT u.emp_id, u.first_name, u.last_name, u.nickname, TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
       NVL(u2.nickname, u2.emp_id) as ncreated_by
       FROM users u INNER JOIN users u2 ON u.modified_by = u2.emp_id");
       $users = array_map(function($row){
@@ -49,11 +53,19 @@ class HomeController extends Controller
 
     public function useradd()
     {
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
       return view("useradd");
     }
 
     public function useradd_post(Request $request)
     {
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
       //Declare custom error message for custom validator
       $errorMsg = [];
       //Using laravel validator for input
@@ -106,10 +118,6 @@ class HomeController extends Controller
         {
           $errorMsg[]="Department is required.";
         }
-        if(empty($request->parttime))
-        {
-          $errorMsg[]="Part Time is required.";
-        }
       }
       $select = DB::connection("oracle")->select("SELECT * FROM USERS WHERE EMP_ID = ? ", [$request->empid]);
       if(!empty($select))
@@ -160,15 +168,15 @@ class HomeController extends Controller
         if($request->usertype == "staff")
         {
           $data2 = [
-            "staff_id" => $request->empid,
+            "emp_id" => $request->empid,
             "dept" => $request->dept,
-            "part_time" => $request->parttime,
+            "part_time" => ($request->parttime == 1 ? 1 : 0),
           ];
-          DB::connection("oracle")->table("staff")->insert($data2);
+          DB::connection("oracle")->table("staffs")->insert($data2);
         }
         else {
           $data2 = [
-            "mgr_id" => $request->empid,
+            "emp_id" => $request->empid,
           ];
           DB::connection("oracle")->table("managers")->insert($data2);
         }
@@ -187,16 +195,21 @@ class HomeController extends Controller
 
     public function useredit(Request $request)
     {
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
       $req = UserFunction::odecrypt($request->q);
-      $user = DB::connection("oracle")->select("SELECT u.*, TO_CHAR(u.dob, 'DD/MM/YYYY') fmtdob,
+      $user = DB::connection("oracle")->select("SELECT u.emp_id, u.first_name, u.last_name, u.nickname, u.street_add1,
+        u.street_add2, u.zip_code, u.city, u.state, u.marital_status, u.ssn, u.status, TO_CHAR(u.dob, 'DD/MM/YYYY') fmtdob,
       TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmcreated_date,
-      TO_CHAR(u.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
+      TO_CHAR(u.modified_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
       u2.nickname createdby, u3.nickname modifiedby
       FROM users u
       INNER JOIN users u2 on u2.emp_id = u.created_by
       INNER JOIN users u3 on u3.emp_id = u.modified_by
       WHERE u.emp_id = ? ", [$req->empid]);
-      $select = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [$req->empid]);
+      $select = DB::connection("oracle")->select("SELECT * FROM staffs WHERE emp_id = ?", [$req->empid]);
       if(empty($select))
       {
         $user[0]->usertype = "manager";
@@ -214,6 +227,10 @@ class HomeController extends Controller
 
     public function useredit_post(Request $request)
     {
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
       $empid = UserFunction::decrypt($request->encempid);
       //Declare custom error message for custom validator
       $errorMsg = [];
@@ -260,10 +277,6 @@ class HomeController extends Controller
         {
           $errorMsg[]="Department is required.";
         }
-        if(empty($request->parttime))
-        {
-          $errorMsg[]="Part Time is required.";
-        }
       }
       $select = DB::connection("oracle")->select("SELECT * FROM users WHERE nickname = ? AND emp_id != ? ", [$request->nname, $empid]);
       if(!empty($select))
@@ -306,13 +319,14 @@ class HomeController extends Controller
           "ssn" => $request->ssn,
           "modified_date" => DB::raw("sysdate"),
           "modified_by" => session("empid"),
+          "status" => ($request->parttime == 1 ? 1 : 0),
         ];
         if(!empty($changepass))
         {
           $data = array_merge($data, $changepass);
         }
         $affected = DB::connection("oracle")->table("users")->where("emp_id", $empid)->update($data);
-        $select = DB::connection("oracle")->select("SELECT * FROM staff WHERE staff_id = ?", [$empid]);
+        $select = DB::connection("oracle")->select("SELECT * FROM staffs WHERE emp_id = ?", [$empid]);
         if(empty($select))
         {
           $usertype = "manager";
@@ -325,18 +339,18 @@ class HomeController extends Controller
         {
           if($request->usertype == "manager")
           {
-            $delete = DB::connection("oracle")->table("staff")->where("staff_id", $empid)->delete();
-            $data2 = [ "mgr_id" => $empid ];
+            $delete = DB::connection("oracle")->table("staffs")->where("emp_id", $empid)->delete();
+            $data2 = [ "emp_id" => $empid ];
             $insert = DB::connection("oracle")->table("managers")->insert($data2);
           }
           else {
-            $delete = DB::connection("oracle")->table("managers")->where("mgr_id", $empid)->delete();
+            $delete = DB::connection("oracle")->table("managers")->where("emp_id", $empid)->delete();
             $data2 = [
-              "staff_id" => $empid,
+              "emp_id" => $empid,
               "dept" => $request->dept,
-              "part_time" => $request->parttime,
+              "part_time" => ($request->parttime == 1 ? 1 : 0),
             ];
-            $insert = DB::connection("oracle")->table("staff")->insert($data2);
+            $insert = DB::connection("oracle")->table("staffs")->insert($data2);
           }
         }
         else
@@ -345,9 +359,9 @@ class HomeController extends Controller
           {
             $data2 = [
               "dept" => $request->dept,
-              "part_time" => $request->parttime,
+              "part_time" => ($request->parttime == 1 ? 1 : 0),
             ];
-            $affected = DB::connection("oracle")->table("staff")->where("staff_id", $empid)->update($data2);
+            $affected = DB::connection("oracle")->table("staffs")->where("emp_id", $empid)->update($data2);
           }
         }
         if($affected == 0 && $affected2 == false)
@@ -372,9 +386,13 @@ class HomeController extends Controller
 
     public function userdel(Request $request)
     {
+      if(session("usertype") != "manager")
+      {
+        return redirect()->route("home");
+      }
       $delid = UserFunction::odecrypt($request->delid);
-      $affected = DB::connection("oracle")->table("managers")->where("mgr_id", $delid->empid)->delete();
-      $affected = DB::connection("oracle")->table("staff")->where("staff_id", $delid->empid)->delete();
+      $affected = DB::connection("oracle")->table("managers")->where("emp_id", $delid->empid)->delete();
+      $affected = DB::connection("oracle")->table("staffs")->where("emp_id", $delid->empid)->delete();
       $affected = DB::connection("oracle")->table("users")->where("emp_id", $delid->empid)->delete();
       if($affected > 0)
       {

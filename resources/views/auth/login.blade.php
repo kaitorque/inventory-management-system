@@ -17,7 +17,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- begin::Head -->
 	<head>
 		<meta charset="utf-8" />
-		<title>Metronic | Login Page - 2</title>
+		<title>Kedai Ustaz</title>
 		<meta name="description" content="Latest updates and statistic charts">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
@@ -43,7 +43,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--RTL version:<link href="../../../assets/demo/default/base/style.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
 
 		<!--end::Global Theme Styles -->
-		<link rel="shortcut icon" href="{{asset('assets/demo/default/media/img/logo/favicon.ico')}}" />
+		<link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" />
 	</head>
 
 	<!-- end::Head -->
@@ -58,7 +58,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="m-login__container">
 						<div class="m-login__logo">
 							<a href="#">
-								<img src="{{asset('assets/app/media/img/logos/logo-1.png')}}">
+								<img src="{{asset('img/kedai-ustaz2.png')}}">
 							</a>
 						</div>
 						<div class="m-login__signin">
