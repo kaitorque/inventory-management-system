@@ -53,4 +53,74 @@ class AjaxController extends Controller
       else
         return "false";
     }
+
+    public function checkrid(Request $request)
+    {
+      $check = DB::connection("oracle")->select("SELECT * FROM requests WHERE request_id = ? ", [$request->rid]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
+
+    public function checkdid(Request $request)
+    {
+      $check = DB::connection("oracle")->select("SELECT * FROM delivered WHERE delivered_id = ? ", [$request->did]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
+
+    public function checkpuid(Request $request)
+    {
+      $check = DB::connection("oracle")->select("SELECT * FROM purchases WHERE purchases_id = ? ", [$request->puid]);
+      if(empty($check))
+        return "true";
+      else
+        return "false";
+    }
+
+    public function invlist(Request $request)
+    {
+        // $limit = 50;
+        $bind = [];
+        $condition = [];
+        $where = "";
+        if(!empty($request->mpid))
+        {
+          $condition[] = " product_id LIKE ? ";
+          $bind[] = "%$request->mpid%";
+        }
+        if(!empty($request->mcategory))
+        {
+          $condition[] = " category LIKE ? ";
+          $bind[] = "%$request->mcategory%";
+        }
+        if(!empty($request->mbrand))
+        {
+          $condition[] = " brand LIKE ? ";
+          $bind[] = "%$request->mbrand%";
+        }
+        if(!empty($request->mmodel))
+        {
+          $condition[] = " model LIKE ? ";
+          $bind[] = "%$request->mmodel%";
+        }
+        if(!empty($condition))
+        {
+          $where = " WHERE ";
+        }
+        $strcond = implode(" AND ", $condition);
+        // $bind[] = $limit;
+        $list = DB::connection("oracle")->select("SELECT product_id, category, brand, model, original_cost, retail_price
+          from inventories
+          {$where} {$strcond}", $bind);
+
+        return response()->json([
+          "success" => true,
+          "response" => "Found Inventory",
+          "data" => $list,
+        ]);
+    }
 }

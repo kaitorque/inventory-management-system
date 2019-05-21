@@ -78,7 +78,10 @@
 												</div>
 												<div class="col-md-6">
 													<label>Part Time:</label>
-													<input type="text" class="form-control m-input" name="parttime" value="">
+													<?php
+													$optionArr = "No,Yes";
+													$valueArr = "0,1";
+													echo UserFunction::buildcbsort("parttime", $optionArr, $valueArr, 0, "form-control m-input"); ?>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
@@ -105,13 +108,21 @@
 												</div>
 												<div class="col-md-6">
 													<label>State:</label>
-													<input type="text" class="form-control m-input" name="state" value="">
+													<?php
+													$optionArr = "KUALA LUMPUR, JOHOR, KEDAH, KELANTAN, MELAKA, NEGERI SEMBILAN, PAHANG, PENANG, PERAK, PERLIS, SABAH, SARAWAK, SELANGOR, TERRENGGANU, LABUAN, PUTRAJAYA";
+													$valueArr = "KUALA LUMPUR, JOHOR, KEDAH, KELANTAN, MELAKA, NEGERI SEMBILAN, PAHANG, PENANG, PERAK, PERLIS, SABAH, SARAWAK, SELANGOR, TERRENGGANU, LABUAN, PUTRAJAYA";
+													echo UserFunction::buildcbsort("state", $optionArr, $valueArr, "KUALA LUMPUR", "form-control m-input"); ?>
+													<!-- <input type="text" class="form-control m-input" name="state" value=""> -->
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Marital Status:</label>
-													<input type="text" class="form-control m-input" name="maritalstatus" value="">
+													<?php
+													$optionArr = "MARRIED,SINGLE";
+													$valueArr = "MARRIED,SINGLE";
+													echo UserFunction::buildcbsort("maritalstatus", $optionArr, $valueArr, "SINGLE", "form-control m-input"); ?>
+													<!-- <input type="text" class="form-control m-input" name="maritalstatus" value=""> -->
 												</div>
 												<div class="col-md-6">
 													<label>IC Number:</label>
