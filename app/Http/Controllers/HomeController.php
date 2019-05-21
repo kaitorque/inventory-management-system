@@ -20,7 +20,21 @@ class HomeController extends Controller
 
     public function home()
     {
-      return view('home');
+      $brandlist = DB::connection('oracle')->select("SELECT BRAND,SUM(QUANTITY) AS TOTAL FROM INVENTORIES GROUP BY BRAND");
+
+      $salesmay =  DB::connection('oracle')->select("SELECT SUM(B.QUANTITY*C.RETAIL_PRICE) AS TOTAL2 ,TO_CHAR(A.CREATED_DATE,'MONTH')
+                                                     AS MONTH FROM PURCHASES A JOIN SALES B ON A.PURCHASES_ID=B.PURCHASES_ID join inventories c on b.product_id=c.product_id
+                                                     WHERE TO_CHAR(A.CREATED_DATE,'MONTH') = TO_CHAR(SYSDATE,'MONTH') GROUP BY TO_CHAR(A.CREATED_DATE,'MONTH')");
+
+      $countdelivery =  DB::connection('oracle')->select("SELECT COUNT(DELIVERED_ID) AS TOTAL FROM DELIVERED");
+
+      $countinv =  DB::connection('oracle')->select("SELECT COUNT(product_ID) AS TOTAL FROM inventories");
+
+      $countrequest =  DB::connection('oracle')->select("SELECT COUNT(REQUEST_ID) AS TOTAL FROM REQUESTS");
+
+      $countpurchase =  DB::connection('oracle')->select("SELECT COUNT(PURCHASES_ID) AS TOTAL FROM PURCHASES");
+
+      return view('home')->with("brandlist", $brandlist)->with("salesmay",$salesmay)->with("countdelivery",$countdelivery)->with("countinv",$countinv)->with("countrequest",$countrequest)->with("countpurchase",$countpurchase);
     }
 
     public function userlist(Request $request)
