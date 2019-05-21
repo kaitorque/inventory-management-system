@@ -36,7 +36,11 @@
 												</div>
 												<div class="col-md-6">
 													<label>Status:</label>
-													<input type="text" class="form-control m-input" name="status" value="{{$requests[0]->status}}">
+													<?php
+													$optionArr = "CHECKING, PENDING, SUCCESS, FAILED";
+													$valueArr = "CHECKING, PENDING, SUCCESS, FAILED";
+													echo UserFunction::buildcbsort("status", $optionArr, $valueArr, $requests[0]->status, "form-control m-input"); ?>
+													<!-- <input type="text" class="form-control m-input" name="status" value=""> -->
 												</div>
 											</div>
 											<div class="form-group m-form__group row">

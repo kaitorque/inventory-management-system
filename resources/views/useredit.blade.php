@@ -120,13 +120,21 @@
 												</div>
 												<div class="col-md-6">
 													<label>State:</label>
-													<input type="text" class="form-control m-input" name="state" value="{{$user->state}}">
+													<?php
+													$optionArr = "KUALA LUMPUR, JOHOR, KEDAH, KELANTAN, MELAKA, NEGERI SEMBILAN, PAHANG, PENANG, PERAK, PERLIS, SABAH, SARAWAK, SELANGOR, TERRENGGANU, LABUAN, PUTRAJAYA";
+													$valueArr = "KUALA LUMPUR, JOHOR, KEDAH, KELANTAN, MELAKA, NEGERI SEMBILAN, PAHANG, PENANG, PERAK, PERLIS, SABAH, SARAWAK, SELANGOR, TERRENGGANU, LABUAN, PUTRAJAYA";
+													echo UserFunction::buildcbsort("state", $optionArr, $valueArr, $user->state, "form-control m-input"); ?>
+													<!-- <input type="text" class="form-control m-input" name="state" value=""> -->
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<div class="col-md-6">
 													<label>Marital Status:</label>
-													<input type="text" class="form-control m-input" name="maritalstatus" value="{{$user->marital_status}}">
+													<?php
+													$optionArr = "MARRIED,SINGLE";
+													$valueArr = "MARRIED,SINGLE";
+													echo UserFunction::buildcbsort("maritalstatus", $optionArr, $valueArr, $user->marital_status, "form-control m-input"); ?>
+													<!-- <input type="text" class="form-control m-input" name="maritalstatus" value=""> -->
 												</div>
 												<div class="col-md-6">
 													<label>IC Number:</label>
