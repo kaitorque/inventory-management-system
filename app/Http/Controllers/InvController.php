@@ -21,7 +21,8 @@ class InvController extends Controller
     {
       $inventory = DB::connection('oracle')->select("SELECT i.product_id, i.category, i.brand, i.model, i.quantity, TO_CHAR(i.created_date,'DD-MM-YYYY HH:MI AM') as fmmodified_date,
         NVL(u.nickname, u.emp_id) as ncreated_by
-        FROM inventories i INNER JOIN users u ON u.emp_id = i.modified_by");
+        FROM inventories i INNER JOIN users u ON u.emp_id = i.modified_by
+        ORDER BY i.created_date DESC");
       $inventory = array_map(function($row){
         $row->link = UserFunction::encrypt("pid={$row->product_id}");
         return $row;

@@ -25,7 +25,8 @@ class DelController extends Controller
         INNER JOIN delivered_item b on d.delivered_id = b.delivered_id
         INNER JOIN inventories i on i.product_id = b.product_id
         INNER JOIN users u on u.emp_id = d.modified_by
-        GROUP BY d.delivered_id, TO_CHAR(d.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id), d.status");
+        GROUP BY d.delivered_id, TO_CHAR(d.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id), d.status, d.created_date
+        ORDER BY d.created_date desc");
       $delivered = array_map(function($row){
         $row->link = UserFunction::encrypt("did={$row->delivered_id}");
         return $row;

@@ -25,7 +25,8 @@ class ReqController extends Controller
         INNER JOIN request_item b on r.request_id = b.request_id
         INNER JOIN inventories i on i.product_id = b.product_id
         INNER JOIN users u on u.emp_id = r.modified_by
-        GROUP BY r.request_id, TO_CHAR(r.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id), r.status");
+        GROUP BY r.request_id, TO_CHAR(r.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id), r.status, r.created_date
+        ORDER BY r.created_date DESC");
       $requests = array_map(function($row){
         $row->link = UserFunction::encrypt("rid={$row->request_id}");
         return $row;

@@ -25,7 +25,8 @@ class PurchaseController extends Controller
         INNER JOIN sales s on s.purchases_id = p.purchases_id
         INNER JOIN inventories i on i.product_id = s.product_id
         INNER JOIN users u on u.emp_id = p.modified_by
-        GROUP BY p.purchases_id, TO_CHAR(p.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id)");
+        GROUP BY p.purchases_id, TO_CHAR(p.created_date,'DD-MM-YYYY HH:MI AM'), NVL(u.nickname, u.emp_id), p.created_date
+        ORDER BY p.created_date DESC");
       $purchase = array_map(function($row){
         $row->link = UserFunction::encrypt("puid={$row->purchases_id}");
         return $row;
